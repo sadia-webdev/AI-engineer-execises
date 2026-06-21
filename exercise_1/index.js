@@ -1,7 +1,8 @@
-import OpenAI from "openai";
+import OpenAI from "openai/index.js";
 import dotenv from "dotenv";
 import readline from "readline/promises";
 dotenv.config();
+
 
 
 const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
