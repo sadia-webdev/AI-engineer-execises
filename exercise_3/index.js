@@ -7,30 +7,14 @@ import { Buffer } from "buffer";
 
 const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
-
-const prompt = "A man wearing a suit"
-
-
-const result = await openai.images.generate({
-  model: "gpt-image-2-2026-04-21",
-  prompt,
-  size: "1024x1024",
-  quality: 'hd',
-  response_format: 'b64_json',
-  style: "natural"
+const mp3 =  openai.audio.speech.create({
+model: "gpt-4o-mini-tts",
+voice: "coral",
+input: "Hi, How are you",
+instructions: "speak in a chearful and positive tone "
 })
 
 
-if(!fs.existsSync("images")){
-   fs.mkdirSync("images")
-}
-
-
-const image_base64  = result.data[0]?.b64_json
-const image_bytes = Buffer.from(image_base64, 'base64')
-
-
-fs.writeFileSync('images/output.png', image_bytes)
-
-
-console.log("Image saved to /images/output.png")
+const buffer = Buffer.from(await mp3.arrayBuffer())
+fs.writeFileSync("audio/gpt-4o-mini-tts.mp3", buffer)
+console.log("file saved at /audio/gpt-4o-mini-tts.mp3 ")
